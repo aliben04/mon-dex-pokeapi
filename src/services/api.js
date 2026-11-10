@@ -1,7 +1,7 @@
 
 export async function getCreature(){
     let listPOk=[]
-    const baseUrl="https://pokeapi.co/api/v2/pokemon?limit=20&offset=0"
+    const baseUrl="https://pokeapi.co/api/v2/pokemon?limit=20&offset=10"
     try {
         let data=await fetch(baseUrl)
         if(!data.ok){
@@ -26,4 +26,21 @@ export async function getCreature(){
     }
 }
 
+function toCreature(pokData) {
+    let hp = pokData.stats.find(s => s.stat.name === "hp").base_stat;
+            let attack = pokData.stats.find(s => s.stat.name === "attack").base_stat;
+            let defence = pokData.stats.find(s => s.stat.name === "defense").base_stat;
 
+            return {
+                id: `#${String(pokData.id).padStart(3, "0")}`,
+                name: pokData.name,
+                type: pokData.types[0].type.name,
+                level: "Base",
+                stats: {
+                    hp: hp,
+                    attack: attack,
+                    defence: defence
+                },
+                image: `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${String(pokData.id).padStart(3, "0")}.png`
+            };
+}
