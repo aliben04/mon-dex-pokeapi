@@ -1,4 +1,5 @@
 import { creatures } from "./data.js";
+import { getCreature } from "./src/services/api.js";
 // =============================================================
 // script.js — Mon Dex
 // =============================================================
@@ -28,10 +29,10 @@ let tem = teams;
 
 let idPokemonDetail = ""
 
-function afficherCard(cart) {
+export function afficherCard(cart) {
 
-    let typeShape = "";
-    
+    let typeShape = "bg-black";
+    /*
     switch(cart.type){
         case "Feu": typeShape+="bg-orange-500"; break;
         case "Eau": typeShape+="bg-blue-500"; break;
@@ -44,7 +45,7 @@ function afficherCard(cart) {
         case "Combat": typeShape+="bg-yellow-950"; break;
     }
     
-
+    */
     let article = document.createElement("article");
 
     article.innerHTML = `
@@ -69,7 +70,7 @@ function afficherCard(cart) {
             </div>
 
             <p class="text-sm text-muted">
-                ${cart.level} · Total ${cart.stats.attack + cart.stats.defence}
+                ${cart.level} · Total ${cart.attack + cart.defence}
             </p>
 
             <button id="ajouter" type="button" class="btn-outline">
@@ -196,8 +197,6 @@ function afficherCard(cart) {
                 </span>
             </div>
 
-            <p class="p text-gray-700">${cart.description}</p>
-
             <div class="flex flex-col gap-2 text-sm">
 
                 <div class="grid grid-cols-[80px_1fr_40px] items-center gap-2">
@@ -279,9 +278,6 @@ let detail=document.querySelector("#detail")
 
 
 
-creatures.forEach((p)=>{
-    afficherCard(p)
-})
       
 // -------------------------------------------------------------
 // 3. RECHERCHE
