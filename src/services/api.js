@@ -26,10 +26,28 @@ export async function getCreature(){
     }
 }
 
-function toCreature(pokData) {
+async function toCreature(pokData) {
     let hp = pokData.stats.find(s => s.stat.name === "hp").base_stat;
             let attack = pokData.stats.find(s => s.stat.name === "attack").base_stat;
             let defence = pokData.stats.find(s => s.stat.name === "defense").base_stat;
+            let description=""
+            try {
+                let baseUrl=await fetch(pokData.species.url)
+                if(!baseUrl.ok){
+                    throw new Error("description not found");
+                    
+                }
+                let result=await baseUrl.json()
+                for (let desc of result.flavor_text_entries) {
+                    if (desc.language.name === "en") {
+                        description=desc.flavor_text.replace("\f"," ")
+                        break;
+                    }
+                }
+                
+            } catch (error) {
+                console.log(error)
+            }
 
             return {
                 id: `#${String(pokData.id).padStart(3, "0")}`,
@@ -41,7 +59,8 @@ function toCreature(pokData) {
                     attack: attack,
                     defence: defence
                 },
-                image: `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${String(pokData.id).padStart(3, "0")}.png`
+                image: `https://assets.pokemon.com/assets/cms2/img/pokedex/full/${String(pokData.id).padStart(3, "0")}.png`,
+                description:description
             };
 }
 
@@ -62,7 +81,7 @@ export async function loadlinks(page){
             const resPokymon=await fetch(pok.url)
             let data=await resPokymon.json()
 
-            let pokymon=toCreature(data)
+            let pokymon= await toCreature(data)
             listPok.push(pokymon)
         }
         return listPok
