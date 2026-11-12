@@ -285,7 +285,7 @@ let detail=document.querySelector("#detail")
 // La liste se met à jour pendant la saisie d'un nom
 // (sans tenir compte des majuscules).
 // -------------------------------------------------------------
-
+/*
 let search=document.querySelector("#search")
 
 search.addEventListener("input",()=>{
@@ -301,7 +301,7 @@ search.addEventListener("input",()=>{
   }
 
 })
-
+*/
 
 // -------------------------------------------------------------
 // 5. CRÉER UNE CRÉATURE

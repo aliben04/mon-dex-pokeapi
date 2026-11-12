@@ -92,3 +92,20 @@ export async function loadlinks(page){
     }
 
 }
+
+export async function searchPokymon(namePoky) {
+    let baseUrl=`https://pokeapi.co/api/v2/pokemon/${namePoky}`
+    try {
+        let response=await fetch(baseUrl)
+        if(!response.ok){
+            throw new Error("this pokymon doesnt exist !");    
+        }
+        let result=await response.json()
+        let pokymon= await toCreature(result)
+        return pokymon
+
+    } catch (error) {
+        console.log(error)
+    }
+    
+}

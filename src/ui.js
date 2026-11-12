@@ -1,6 +1,6 @@
 import { afficherCard } from "../script.js";
 import { page } from "./main.js";
-import { loadlinks } from "./services/api.js";
+import { loadlinks, searchPokymon } from "./services/api.js";
 
 
 
@@ -68,4 +68,3 @@ async function afficherFilter(){
         filters.append(button)
     })
 }
-
