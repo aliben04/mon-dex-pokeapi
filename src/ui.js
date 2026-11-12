@@ -1,24 +1,63 @@
 import { afficherCard } from "../script.js";
 import { page } from "./main.js";
-import { loadlinks, searchPokymon } from "./services/api.js";
+import { loadlinks } from "./services/api.js";
 
 
 
 export async function afficherPage(page) {
+    afficherLoading()
+    
     let pageNumber=document.querySelector("#pageNumber")
     pageNumber.textContent = `Page ${page}`;
+    try {
+        let listPok = await loadlinks(page);
+        document.querySelector("#grid").innerHTML = "";
 
-    document.querySelector("#grid").innerHTML = "";
+        if(listPok.length===0){
+            afficherEmpty();
+            return;
+        }
+        for (let poky of listPok) {
+            afficherCard(poky);
+        }
+        afficherFilter()
 
-    let listPok = await loadlinks(page);
-
-    for (let poky of listPok) {
-        afficherCard(poky);
+    } catch (error) {
+        afficherError(page);
     }
-     afficherFilter()
+    
+}
+function afficherError(page) {
 
+    let grid = document.querySelector("#grid");
+
+    grid.innerHTML = `
+        <div class="text-center p-5">
+            <p>Une erreur est survenue !</p>
+            <p>Vérifiez votre connexion Internet.</p>
+
+            <button id="retry" class="bg-blue-500 text-white p-2 rounded">
+                Réessayer
+            </button>
+        </div>
+    `;
+
+    document.querySelector("#retry").addEventListener("click", () => {
+        afficherPage(page);
+    });
 }
 
+function afficherEmpty() {
+    document.querySelector("#grid").innerHTML = `
+        <p>Aucune créature trouvée.</p>
+    `;
+}
+export function afficherLoading() {
+    let grid=document.querySelector("#grid")
+    grid.innerHTML = `
+        <p>Chargement des créatures...</p>
+    `;
+}
 export async function filterType(page){
     let listPok=await loadlinks(page)
     let types=["Tous"]
@@ -62,8 +101,12 @@ async function afficherFilter(){
 
         button.addEventListener("click",()=>{
         filterWithType(t,page)  
-        button.className="chip shrink-0 focus:bg-red-500 focus:text-white focus:border-red-500"
-        tous.className="chip shrink-0"
+        document.querySelectorAll("#filters button").forEach(btn => {
+            btn.classList.remove("bg-red-500", "text-white", "border-red-500");
+        });
+
+        button.classList.add("bg-red-500", "text-white", "border-red-500");
+        tous.className = "chip shrink-0";
         })
         filters.append(button)
     })

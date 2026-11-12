@@ -1,5 +1,5 @@
 import { afficherCard } from "../script.js";
-import { searchPokymon } from "./services/api.js";
+import {  searchPokymon } from "./services/api.js";
 import { afficherPage, filterType, filterWithType } from "./ui.js";
 
 
@@ -30,11 +30,17 @@ search.addEventListener("input", async () => {
     document.querySelector("#grid").innerHTML = ""
 
     if (search.value.trim() === "") {
-        afficherPage(page)
+        afficherPage(1)
         return
     }
 
     let data = await searchPokymon(search.value)
+    
 
     afficherCard(data)
+    if(document.querySelector("#grid").innerHTML === ""){
+       document.querySelector("#grid").innerHTML=` <h1 class="text-center font-bold">
+                    Aucun Pokémon sélectionné
+        </h1>`
+     }
 })

@@ -1,3 +1,4 @@
+import { afficherLoading } from "../ui.js"
 
 export async function getCreature(){
     let listPOk=[]
@@ -70,8 +71,12 @@ export async function loadlinks(page){
     let listPok=[]
     let skip=(page - 1)*showNumber
     let paginateURL=`https://pokeapi.co/api/v2/pokemon?limit=${showNumber}&offset=${skip} `
+   
     try {
-        let response=await fetch(paginateURL)
+        let response=await fetch(paginateURL).catch(
+            error => {
+                throw new Error("Network error");
+        })
         if(!response.ok){
             throw new Error("Could not fetch Pokemon");
         }
@@ -96,9 +101,12 @@ export async function loadlinks(page){
 export async function searchPokymon(namePoky) {
     let baseUrl=`https://pokeapi.co/api/v2/pokemon/${namePoky}`
     try {
-        let response=await fetch(baseUrl)
+        let response=await fetch(baseUrl).catch(
+            error => {
+                throw new Error("Network error");
+        })
         if(!response.ok){
-            throw new Error("this pokymon doesnt exist !");    
+            throw new Error("Could not fetch Pokemon details !");    
         }
         let result=await response.json()
         let pokymon= await toCreature(result)
@@ -106,6 +114,42 @@ export async function searchPokymon(namePoky) {
 
     } catch (error) {
         console.log(error)
+        throw error
     }
     
 }
+/*
+export async function searchAllApi(searchValue) {
+    let listPok=[]
+    let baseUrl=`https://pokeapi.co/api/v2/pokemon?limit=1025&offset=0`
+    try {
+        let response=await fetch(baseUrl)
+        if(!response.ok){
+            throw new Error("Could not fetch data")
+        }
+        
+        let result= await response.json()
+        for(let pok of result.results ){
+            if(pok.name.includes(searchValue.toLowerCase())){
+                
+                let bsU= pok.url
+                let pokym=await fetch(bsU)
+
+                if(!pokym.ok){
+                    throw new error("Could not fetch Pokemon")
+                }
+                
+                let pokData=await pokym.json()
+                console.log(bsU)
+                let pokemon=await toCreature(pokData)
+                listPok.push(pokemon)
+            }
+
+        }
+        return listPok
+    } catch (error) {
+        console.log(error.message)
+        return []
+    }
+}
+*/
