@@ -81,6 +81,7 @@ export async function filterType(page){
             types.push(pok.type)
         }
     })
+    types.push("favory❤️")
     return types
 }
 
@@ -93,7 +94,13 @@ export async function filterWithType(type,page){
                 afficherCard(poky);
         });
         
-    }else{
+    }else if(type==="favory❤️"){
+        let fav=getFavory()
+        fav.forEach(poky => {
+                afficherCard(poky);
+        });
+    }
+    else{
 
         listPok.forEach((pok)=>{
           if(pok.type===type){
@@ -120,7 +127,7 @@ async function afficherFilter(){
         });
 
         button.classList.add("bg-red-500", "text-white", "border-red-500");
-        tous.className = "chip shrink-0";
+        
         })
         filters.append(button)
     })
@@ -149,35 +156,25 @@ export function showErrorSearch(error) {
 
 export function ajouterFAvory(cart){
     let favory=getFavory()
-    let exist=favory.some((team => team.id === cart.id))
+    let exist=favory.some((favori => favori.id === cart.id))
     if(exist){
         return
     }
-    let fav = {
-            id: cart.id,
-            img: cart.image,
-            name: cart.name
-    };
 
-    favory.push(fav);
+    favory.push(cart);
 
     setFavory(favory)
-    addFavory();
+    
 }
 
-export function addFavory(){
-    let listFavory=document.querySelector("#listFavory")
-    let favoryCount=document.querySelector("#favoryCount")
-    listFavory.innerHTML=""
-    let listFavvor=getFavory()
-    listFavvor.forEach(f=>{
-        let div = document.createElement("div");
-        div.classList="relative border flex flex-col rounded-lg p-2"
-        div.innerHTML=`
-            <button id="removePok" ><i class="fa-solid fa-xmark text-[16px] absolute right-0 top-1 text-red-500"></i></button>
-            <img src="${f.img}" alt="${f.name}" class="py-3">
-            <h3 class="text-[16px] font-bold text-center">${f.name} </h3>
-        `
-        listFavory.append(div)
-    })
+export function checkFav(id){
+    let favoriColor = "text-black";
+    let favoris = getFavory();
+
+    let exist = favoris.some(f => f.id === id);
+
+    if (exist) {
+            favoriColor = "text-red-500";
+    }
+    return favoriColor
 }

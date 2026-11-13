@@ -1,7 +1,7 @@
 import { creatures } from "./data.js";
 import { getCreature } from "./src/services/api.js";
 import { getFavory, setFavory } from "./src/storage.js";
-import { ajouterFAvory } from "./src/ui.js";
+import { ajouterFAvory, checkFav } from "./src/ui.js";
 // =============================================================
 // script.js — Mon Dex
 // =============================================================
@@ -34,7 +34,7 @@ let favorys=getFavory()
 let idPokemonDetail = ""
 
 export function afficherCard(cart) {
-
+    let favoriColor=checkFav(cart.id)
     let typeShape = "bg-black";
     /*
     switch(cart.type){
@@ -63,7 +63,7 @@ export function afficherCard(cart) {
                 <span class="absolute left-3 top-2 font-mono text-sm text-muted">
                     ${cart.id}
                 </span>
-                <i id="favori" class="absolute right-3 top-2  fa-regular fa-heart"></i>
+                <i id="favori" class="absolute right-3 top-2 ${favoriColor} fa-solid fa-heart"></i>
             </div>
 
             <div class="flex items-center justify-between gap-2 flex-col md:flex-row">
@@ -90,9 +90,25 @@ export function afficherCard(cart) {
 
     let favori=article.querySelector("#favori")
     favori.addEventListener("click",()=>{
-        ajouterFAvory(cart)
-        favori.classList.toggle("text-red-500")
-        
+    
+        let favoris = getFavory();
+        let exist = favoris.some(f => f.id === cart.id);
+
+        if (exist) {
+            favoris = favoris.filter(f => f.id !== cart.id);
+
+            favori.classList.remove("text-red-500");
+            favori.classList.add("text-black");
+        } else {
+            ajouterFAvory(cart);
+
+            favori.classList.remove( "text-black");
+            favori.classList.add( "text-red-500");
+        }
+
+        if (exist) {
+            setFavory(favoris);
+        }
     })
     // Fonction bach nactualiw les deux boutons
     function actualiserBoutons() {
