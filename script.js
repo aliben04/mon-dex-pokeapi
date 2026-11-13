@@ -1,5 +1,4 @@
 import { creatures } from "./data.js";
-import { getCreature } from "./src/services/api.js";
 import { getFavory, setFavory } from "./src/storage.js";
 import { ajouterFAvory, checkFav } from "./src/ui.js";
 // =============================================================

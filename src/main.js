@@ -27,6 +27,7 @@ btnPrev.addEventListener("click", async () => {
 let search = document.querySelector("#search")
 
 search.addEventListener("input", async () => {
+    sessionStorage.setItem("lastSearch", search.value);
     document.querySelector("#grid").innerHTML = ""
 
     if (search.value.trim() === "") {
@@ -48,3 +49,20 @@ search.addEventListener("input", async () => {
 
 
 })
+let lastSearch = sessionStorage.getItem("lastSearch");
+
+if (lastSearch) {
+    search.value = lastSearch;
+    document.querySelector("#grid").innerHTML = ""
+    try {
+        let data = await searchPokymon(search.value)
+        
+    
+        afficherCard(data)
+        
+    } catch (error) {
+        showErrorSearch(error)
+    }finally{
+        hideLoading()
+    }
+}
