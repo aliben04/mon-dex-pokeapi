@@ -10,7 +10,6 @@ let btnNext=document.querySelector("#next")
 
 export let page=1
 
-afficherPage(page)
 
 btnNext.addEventListener("click", async () => {
     page++;
@@ -28,41 +27,34 @@ let search = document.querySelector("#search")
 
 search.addEventListener("input", async () => {
     sessionStorage.setItem("lastSearch", search.value);
-    document.querySelector("#grid").innerHTML = ""
-
-    if (search.value.trim() === "") {
-        afficherPage(1)
-        return
-    }
-    afficherLoading()
-    try {
-        let data = await searchPokymon(search.value)
-        
-    
-        afficherCard(data)
-        
-    } catch (error) {
-        showErrorSearch(error)
-    }finally{
-        hideLoading()
-    }
-
+    rechercher(search.value)
 
 })
 let lastSearch = sessionStorage.getItem("lastSearch");
 
 if (lastSearch) {
     search.value = lastSearch;
-    document.querySelector("#grid").innerHTML = ""
+    rechercher(lastSearch);
+} else {
+    afficherPage(1);
+}
+
+async function rechercher(value) {
+    document.querySelector("#grid").innerHTML = "";
+
+    if (value.trim() === "") {
+        afficherPage(1);
+        return;
+    }
+
+    afficherLoading();
+
     try {
-        let data = await searchPokymon(search.value)
-        
-    
-        afficherCard(data)
-        
+        let data = await searchPokymon(value);
+        afficherCard(data);
     } catch (error) {
-        showErrorSearch(error)
-    }finally{
-        hideLoading()
+        showErrorSearch(error);
+    } finally {
+        hideLoading();
     }
 }
