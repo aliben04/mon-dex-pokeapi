@@ -65,12 +65,12 @@ async function toCreature(pokData) {
             };
 }
 
-let showNumber=20
 
 export async function loadlinks(page){
+    let showNumber=20
     let listPok=[]
     let skip=(page - 1)*showNumber
-    let paginateURL=`https://pokeapi.co/api/v2/pokemon?limit=${showNumber}&offset=${skip} `
+    let paginateURL=`https://pokeapi.co/api/v2/pokemon?limit=${showNumber}&offset=${skip}`
    
     try {
         let response=await fetch(paginateURL).catch(
@@ -96,7 +96,7 @@ export async function loadlinks(page){
 
 
     } catch (error) {
-        console.log(error)
+        throw error;
     }
 
 }
@@ -109,14 +109,18 @@ export async function searchPokymon(namePoky) {
                 throw new Error("Network error");
         })
         if(!response.ok){
-            throw new Error("Could not fetch Pokemon details !");    
+            if (response.status === 404) {
+                throw new Error("Creature not found. Please enter its full name and check the spelling.");
+            }
+            throw new Error("Server error. Please try again.");    
         }
+
         let result=await response.json()
         let pokymon= await toCreature(result)
+
         return pokymon
 
     } catch (error) {
-        console.log(error)
         throw error
     }
     

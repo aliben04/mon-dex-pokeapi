@@ -1,6 +1,6 @@
 import { afficherCard } from "../script.js";
 import {  searchPokymon } from "./services/api.js";
-import { afficherPage, filterType, filterWithType } from "./ui.js";
+import { afficherLoading, afficherPage, filterType, filterWithType, hideLoading, showErrorSearch } from "./ui.js";
 
 
 
@@ -33,14 +33,18 @@ search.addEventListener("input", async () => {
         afficherPage(1)
         return
     }
-
-    let data = await searchPokymon(search.value)
+    afficherLoading()
+    try {
+        let data = await searchPokymon(search.value)
+        
     
+        afficherCard(data)
+        
+    } catch (error) {
+        showErrorSearch(error)
+    }finally{
+        hideLoading()
+    }
 
-    afficherCard(data)
-    if(document.querySelector("#grid").innerHTML === ""){
-       document.querySelector("#grid").innerHTML=` <h1 class="text-center font-bold">
-                    Aucun Pokémon sélectionné
-        </h1>`
-     }
+
 })

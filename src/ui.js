@@ -23,24 +23,28 @@ export async function afficherPage(page) {
         afficherFilter()
 
     } catch (error) {
-        afficherError(page);
+        afficherError(page,error);
+    }finally{
+        hideLoading()
     }
     
 }
-function afficherError(page) {
+function afficherError(page,error) {
+    let error_=document.querySelector("#loading").nextElementSibling
+    let createError=document.createElement("div")
+    createError.className="text-center p-5 flex flex-col justify-center items-center w-full col-span-full"
 
-    let grid = document.querySelector("#grid");
+    createError.innerHTML = `
+        
+            <p>${error}</p>
+            <p>Check your Internet connection.</p>
 
-    grid.innerHTML = `
-        <div class="text-center p-5">
-            <p>Une erreur est survenue !</p>
-            <p>Vérifiez votre connexion Internet.</p>
-
-            <button id="retry" class="bg-blue-500 text-white p-2 rounded">
+            <button id="retry" class="btn-primary bg-blue-500 text-white p-2 rounded">
                 Réessayer
             </button>
-        </div>
     `;
+    error_.innerHTML=""
+    error_.append(createError)
 
     document.querySelector("#retry").addEventListener("click", () => {
         afficherPage(page);
@@ -53,11 +57,20 @@ function afficherEmpty() {
     `;
 }
 export function afficherLoading() {
-    let grid=document.querySelector("#grid")
-    grid.innerHTML = `
-        <div class="border-4 border-black border-t-rose-50 rounded-3xl h-10 w-10 animate-spin"></div>
-    `;
+    document.querySelector("#grid").innerHTML =""
+    let loading=document.querySelector("#loading")
+    loading.classList.remove("hidden")
+    loading.classList.add("flex")
+    
 }
+
+export function hideLoading() {
+    let loading=document.querySelector("#loading")
+    loading.classList.remove("flex")
+    loading.classList.add("hidden")
+    
+}
+
 export async function filterType(page){
     let listPok=await loadlinks(page)
     let types=["Tous"]
@@ -110,4 +123,25 @@ async function afficherFilter(){
         })
         filters.append(button)
     })
+}
+
+
+export function showErrorSearch(error) {
+
+    let error_ = document.querySelector("#loading").nextElementSibling;
+
+    let createError = document.createElement("div");
+
+    createError.className = "text-center p-5 flex flex-col justify-center items-center w-full col-span-full";
+
+    createError.innerHTML = `
+    <div class="text-center p-6 bg-red-50 rounded-xl border border-red-200">
+        <p class="text-red-600 text-lg font-bold">⚠️ Oops! An error occurred</p>
+        <p class="text-gray-600 text-sm mt-2">${error}</p>
+    </div>
+`;
+
+    error_.innerHTML = "";
+    error_.append(createError);
+
 }
