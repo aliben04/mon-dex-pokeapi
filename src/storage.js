@@ -12,5 +12,5 @@ export function setSearch(data){
     sessionStorage.setItem("lastSearch",data );
 }
 export function getSearch(){
-    sessionStorage.getItem("lastSearch");
+   return sessionStorage.getItem("lastSearch");
 }

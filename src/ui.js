@@ -178,3 +178,29 @@ export function checkFav(id){
     }
     return favoriColor
 }
+
+export function checkColor(type){
+    let typeShape = "";
+    
+    switch(type){
+        case "fire": typeShape += "bg-orange-500"; break;
+        case "water": typeShape += "bg-blue-500"; break;
+        case "grass": typeShape += "bg-green-500"; break;
+        case "electric": typeShape += "bg-yellow-400"; break;
+        case "ice": typeShape += "bg-cyan-300"; break;
+        case "fighting": typeShape += "bg-red-700"; break;
+        case "poison": typeShape += "bg-purple-500"; break;
+        case "ground": typeShape += "bg-amber-700"; break;
+        case "flying": typeShape += "bg-indigo-400"; break;
+        case "psychic": typeShape += "bg-pink-500"; break;
+        case "bug": typeShape += "bg-lime-500"; break;
+        case "rock": typeShape += "bg-stone-500"; break;
+        case "ghost": typeShape += "bg-violet-700"; break;
+        case "dragon": typeShape += "bg-indigo-700"; break;
+        case "dark": typeShape += "bg-gray-800"; break;
+        case "steel": typeShape += "bg-slate-500"; break;
+        case "fairy": typeShape += "bg-pink-300"; break;
+        case "normal": typeShape += "bg-gray-400"; break;
+    }
+    return typeShape
+}

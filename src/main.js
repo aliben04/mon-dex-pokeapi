@@ -1,5 +1,6 @@
 import { afficherCard } from "../script.js";
 import {  searchPokymon } from "./services/api.js";
+import { getSearch, setSearch } from "./storage.js";
 import {  afficherLoading, afficherPage, filterType, filterWithType, hideLoading, showErrorSearch } from "./ui.js";
 
 
@@ -12,8 +13,14 @@ export let page=1
 
 
 btnNext.addEventListener("click", async () => {
+    btnNext.disabled = true;
     page++;
-    await afficherPage(page);
+    try{
+        await afficherPage(page);
+
+    }finally{
+        btnNext.disabled = false
+    }
 });
 
 btnPrev.addEventListener("click", async () => {
@@ -25,12 +32,19 @@ btnPrev.addEventListener("click", async () => {
 
 let search = document.querySelector("#search")
 
-search.addEventListener("input", async () => {
-    sessionStorage.setItem("lastSearch", search.value);
-    rechercher(search.value)
+let timer;
 
-})
-let lastSearch = sessionStorage.getItem("lastSearch");
+search.addEventListener("input", () => {
+    clearTimeout(timer);
+
+    setSearch(search.value)
+
+    timer = setTimeout(() => {
+        rechercher(search.value);
+    }, 500);
+});
+let lastSearch = getSearch();
+
 
 if (lastSearch) {
     search.value = lastSearch;

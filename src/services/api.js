@@ -103,7 +103,7 @@ export async function loadlinks(page){
 
 export async function searchPokymon(namePoky) {
     let baseUrl=`https://pokeapi.co/api/v2/pokemon/${namePoky}`
-    try {
+        
         let response=await fetch(baseUrl).catch(
             error => {
                 throw new Error("Network error");
@@ -120,9 +120,7 @@ export async function searchPokymon(namePoky) {
 
         return pokymon
 
-    } catch (error) {
-        throw error
-    }
+
     
 }
 /*

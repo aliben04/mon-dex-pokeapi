@@ -1,6 +1,6 @@
 import { creatures } from "./data.js";
 import { getFavory, setFavory } from "./src/storage.js";
-import { ajouterFAvory, checkFav } from "./src/ui.js";
+import { ajouterFAvory, checkColor, checkFav } from "./src/ui.js";
 // =============================================================
 // script.js — Mon Dex
 // =============================================================
@@ -26,29 +26,13 @@ let cmp=document.querySelector("#cmp")
 
 let teams = JSON.parse(localStorage.getItem("teams")) || [];
 
-let tem = teams;
-let favorys=getFavory()
-
-
 let idPokemonDetail = ""
 
 export function afficherCard(cart) {
     let favoriColor=checkFav(cart.id)
-    let typeShape = "bg-black";
-    /*
-    switch(cart.type){
-        case "Feu": typeShape+="bg-orange-500"; break;
-        case "Eau": typeShape+="bg-blue-500"; break;
-        case "Plante": typeShape+="bg-green-500"; break;
-        case "Électrik": typeShape+="bg-yellow-500 "; break;
-        case "Psy": typeShape+="bg-purple-500 "; break;
-        case "Fée": typeShape+="bg-pink-200 "; break;
-        case "Normal": typeShape+=" bg-black"; break;
-        case "Ténèbres": typeShape+="bg-purple-950"; break;
-        case "Combat": typeShape+="bg-yellow-950"; break;
-    }
+    let typeShape = checkColor(cart.type);
     
-    */
+    
     let article = document.createElement("article");
 
     article.innerHTML = `
