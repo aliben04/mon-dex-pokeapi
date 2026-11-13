@@ -83,7 +83,10 @@ export async function loadlinks(page){
         let result=await response.json()
 
         for(let pok of result.results){
-            const resPokymon=await fetch(pok.url)
+            const resPokymon=await fetch(pok.url).catch(
+                error => {
+                    throw new Error("Network error");
+            })
             let data=await resPokymon.json()
 
             let pokymon= await toCreature(data)

@@ -55,7 +55,7 @@ function afficherEmpty() {
 export function afficherLoading() {
     let grid=document.querySelector("#grid")
     grid.innerHTML = `
-        <p>Chargement des créatures...</p>
+        <div class="border-4 border-black border-t-rose-50 rounded-3xl h-10 w-10 animate-spin"></div>
     `;
 }
 export async function filterType(page){

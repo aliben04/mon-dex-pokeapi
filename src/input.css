@@ -14,10 +14,9 @@
   }
 
   /* Bouton de filtre par type */
-  .chip {
-    @apply h-11 px-5 rounded-full border-2 border-line bg-white text-ink font-bold outline-none;
-  }
-
+   .chip {
+        @apply h-10 px-7 rounded-full border-2 border-gray-200 bg-white text-gray-900 font-bold outline-none shrink-0;
+    }
   /* Champ de formulaire */
   .field {
     @apply h-12 rounded-xl border-2 border-line bg-white px-3 text-base outline-none;
