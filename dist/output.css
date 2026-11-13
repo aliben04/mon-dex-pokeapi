@@ -649,6 +649,10 @@ video {
   top: 0.5rem;
 }
 
+.right-3 {
+  right: 0.75rem;
+}
+
 .col-span-full {
   grid-column: 1 / -1;
 }

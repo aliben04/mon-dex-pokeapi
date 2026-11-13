@@ -1,6 +1,7 @@
 import { afficherCard } from "../script.js";
 import { page } from "./main.js";
 import { loadlinks } from "./services/api.js";
+import { getFavory, setFavory } from "./storage.js";
 
 
 
@@ -144,4 +145,39 @@ export function showErrorSearch(error) {
     error_.innerHTML = "";
     error_.append(createError);
 
+}
+
+export function ajouterFAvory(cart){
+    let favory=getFavory()
+    let exist=favory.some((team => team.id === cart.id))
+    if(exist){
+        return
+    }
+    let fav = {
+            id: cart.id,
+            img: cart.image,
+            name: cart.name
+    };
+
+    favory.push(fav);
+
+    setFavory(favory)
+    addFavory();
+}
+
+export function addFavory(){
+    let listFavory=document.querySelector("#listFavory")
+    let favoryCount=document.querySelector("#favoryCount")
+    listFavory.innerHTML=""
+    let listFavvor=getFavory()
+    listFavvor.forEach(f=>{
+        let div = document.createElement("div");
+        div.classList="relative border flex flex-col rounded-lg p-2"
+        div.innerHTML=`
+            <button id="removePok" ><i class="fa-solid fa-xmark text-[16px] absolute right-0 top-1 text-red-500"></i></button>
+            <img src="${f.img}" alt="${f.name}" class="py-3">
+            <h3 class="text-[16px] font-bold text-center">${f.name} </h3>
+        `
+        listFavory.append(div)
+    })
 }

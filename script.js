@@ -1,5 +1,7 @@
 import { creatures } from "./data.js";
 import { getCreature } from "./src/services/api.js";
+import { getFavory, setFavory } from "./src/storage.js";
+import { ajouterFAvory } from "./src/ui.js";
 // =============================================================
 // script.js — Mon Dex
 // =============================================================
@@ -24,7 +26,9 @@ div.addEventListener("click", () => {
 let cmp=document.querySelector("#cmp")
 
 let teams = JSON.parse(localStorage.getItem("teams")) || [];
+
 let tem = teams;
+let favorys=getFavory()
 
 
 let idPokemonDetail = ""
@@ -59,6 +63,7 @@ export function afficherCard(cart) {
                 <span class="absolute left-3 top-2 font-mono text-sm text-muted">
                     ${cart.id}
                 </span>
+                <i id="favori" class="absolute right-3 top-2  fa-regular fa-heart"></i>
             </div>
 
             <div class="flex items-center justify-between gap-2 flex-col md:flex-row">
@@ -70,7 +75,7 @@ export function afficherCard(cart) {
             </div>
 
             <p class="text-sm text-muted">
-                ${cart.level} · Total ${cart.attack + cart.defence}
+                ${cart.level} · Total ${cart.stats.attack + cart.stats.defence}
             </p>
 
             <button id="ajouter" type="button" class="btn-outline">
@@ -81,9 +86,14 @@ export function afficherCard(cart) {
     `;
 
     // Bouton dyal la carte
-    let btnA = article.querySelector("#ajouter");
+    let btnA = article.querySelector("#ajouter");   
 
-
+    let favori=article.querySelector("#favori")
+    favori.addEventListener("click",()=>{
+        ajouterFAvory(cart)
+        favori.classList.toggle("text-red-500")
+        
+    })
     // Fonction bach nactualiw les deux boutons
     function actualiserBoutons() {
 
@@ -285,23 +295,6 @@ let detail=document.querySelector("#detail")
 // La liste se met à jour pendant la saisie d'un nom
 // (sans tenir compte des majuscules).
 // -------------------------------------------------------------
-/*
-let search=document.querySelector("#search")
-
-search.addEventListener("input",()=>{
-  section.innerHTML = "";
-  creatures.forEach((creat)=>{
-    if(creat.name.toLowerCase().includes(search.value.toLowerCase())){
-      afficherCard(creat)
-  }
-  
-  })
-  if (section.innerHTML === "") {
-        section.innerHTML = "<h1 class='text-center font-bold rounded-card border-2 border-ink bg-white p-6'>Aucun Pokémon trouvé !</h1>";
-  }
-
-})
-*/
 
 // -------------------------------------------------------------
 // 5. CRÉER UNE CRÉATURE
@@ -517,7 +510,7 @@ function addcartInTeam() {
           localStorage.setItem("teams", JSON.stringify(teams));
           cmp.textContent=teams.length
           addcartInTeam();
-          let btnA = article.querySelector("#ajouter");
+          
         })
         
       });

@@ -1,6 +1,6 @@
 import { afficherCard } from "../script.js";
 import {  searchPokymon } from "./services/api.js";
-import { afficherLoading, afficherPage, filterType, filterWithType, hideLoading, showErrorSearch } from "./ui.js";
+import { addFavory, afficherLoading, afficherPage, filterType, filterWithType, hideLoading, showErrorSearch } from "./ui.js";
 
 
 
@@ -48,3 +48,5 @@ search.addEventListener("input", async () => {
 
 
 })
+
+addFavory();
